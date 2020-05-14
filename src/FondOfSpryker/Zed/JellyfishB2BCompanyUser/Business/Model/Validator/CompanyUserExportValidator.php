@@ -16,6 +16,7 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
 {
     protected const ENTITY_TRANSFER_FOREIGN_KEY_ID_COMPANY = 'spy_company_user.fk_company';
     protected const ENTITY_TRANSFER_NAME_COMPANY_USER = 'spy_company_user';
+    protected const EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER = 'company_user';
 
     /**
      * @var \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyTypeFacadeInterface
@@ -65,14 +66,31 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
                 return false;
         }
 
-        $companyUserTransfer = (new CompanyUserTransfer())->setIdCompanyUser($eventEntityTransfer->getId());
-        $companyUserTransfer = $this->companyUserFacade->findCompanyUserById($companyUserTransfer);
+        $companyUserTransfer = $this->getCompanyUserTransfer($eventEntityTransfer);
         $companyUserRolesCollection = $this->getCompanyUserRolesCollection(
             $companyUserTransfer,
             $companyUserTransfer->getCompanyRoleCollection()
         );
 
         return $this->isCompanyUserRollesCollectionValid($companyTypeTransfer, $companyUserRolesCollection);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\EventEntityTransfer $eventEntityTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer
+     */
+    protected function getCompanyUserTransfer(EventEntityTransfer $eventEntityTransfer): CompanyUserTransfer
+    {
+        $transferData = $eventEntityTransfer->getTransferData();
+        if (isset($transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER])) {
+            /** @var \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer */
+            return $transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER];
+        }
+
+        $companyUserTransfer = (new CompanyUserTransfer())->setIdCompanyUser($eventEntityTransfer->getId());
+
+        return $this->companyUserFacade->findCompanyUserById($companyUserTransfer);
     }
 
     /**

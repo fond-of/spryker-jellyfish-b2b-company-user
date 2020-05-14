@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business;
 
+use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\EventEntityTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -24,5 +25,38 @@ class JellyfishB2BCompanyUserFacade extends AbstractFacade implements JellyfishB
         return $this->getFactory()
             ->createCompanyUserExportValidator()
             ->validate($transfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer
+     */
+    public function expandCompanyUserWithCustomer(CompanyUserTransfer $companyUserTransfer): CompanyUserTransfer
+    {
+        return $this->getFactory()
+            ->createCompanyUserCustomerExpander()
+            ->expand($companyUserTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer
+     */
+    public function expandCompanyUserWithCompanyBusinessUnit(
+        CompanyUserTransfer $companyUserTransfer
+    ): CompanyUserTransfer {
+        return $this->getFactory()
+            ->createCompanyUserCompanyBusinessUnitExpander()
+            ->expand($companyUserTransfer);
     }
 }
