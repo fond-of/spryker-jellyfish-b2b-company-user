@@ -34,7 +34,7 @@ class CompanyUserCustomerExpander implements CompanyUserCustomerExpanderInterfac
         $customerTransfer = (new CustomerTransfer())->setIdCustomer($companyUserTransfer->getFkCustomer());
         $customerTransfer = $this->customerFacade->findCustomerById($customerTransfer);
 
-        if ($customerTransfer === null) {
+        if ($customerTransfer->getIdCustomer() === null) {
             return $companyUserTransfer;
         }
 

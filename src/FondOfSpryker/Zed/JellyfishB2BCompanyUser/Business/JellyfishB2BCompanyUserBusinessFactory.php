@@ -43,7 +43,7 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\CompanyUserCompanyBusinessUnitExpanderInterface
+     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyBusinessUnitExpanderInterface
      */
     public function createCompanyUserCompanyBusinessUnitExpander(): CompanyUserCompanyBusinessUnitExpanderInterface
     {

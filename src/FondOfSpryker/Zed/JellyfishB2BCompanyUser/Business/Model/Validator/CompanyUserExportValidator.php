@@ -61,8 +61,10 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
 
         $companyTypeTransfer = $this->getCompanyTypeTransfer($eventEntityTransfer);
 
-        if ($companyTypeTransfer === null
-            || $companyTypeTransfer->getName() === $this->companyTypeFacade->getCompanyTypeManufacturerName()) {
+        if (
+            $companyTypeTransfer === null
+            || $companyTypeTransfer->getName() === $this->companyTypeFacade->getCompanyTypeManufacturerName()
+        ) {
                 return false;
         }
 
@@ -84,7 +86,6 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
     {
         $transferData = $eventEntityTransfer->getTransferData();
         if (isset($transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER])) {
-            /** @var \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer */
             return $transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER];
         }
 
@@ -129,10 +130,12 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
         $companyUsersCollection = new ArrayObject();
 
         foreach ($companyRoleCollectionTransfer->getRoles() as $companyRoleTransfer) {
-            if (!$this->checkRoleHasCompanyUser(
-                $companyUserTransfer,
-                $companyRoleTransfer->getCompanyUserCollection()->getCompanyUsers()
-            )) {
+            if (
+                !$this->checkRoleHasCompanyUser(
+                    $companyUserTransfer,
+                    $companyRoleTransfer->getCompanyUserCollection()->getCompanyUsers()
+                )
+            ) {
                 continue;
             }
 

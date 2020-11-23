@@ -33,9 +33,11 @@ class CompanyUserCompanyBusinessUnitExpander implements CompanyUserCompanyBusine
 
         $companyBusinessUnitTransfer = (new CompanyBusinessUnitTransfer())
             ->setIdCompanyBusinessUnit($companyUserTransfer->getFkCompanyBusinessUnit());
-        $companyBusinessUnitTransfer = $this->companyBusinessUnitFacade->findCompanyBusinessUnitById($companyBusinessUnitTransfer);
 
-        if ($companyBusinessUnitTransfer === null) {
+        $companyBusinessUnitTransfer = $this->companyBusinessUnitFacade
+            ->findCompanyBusinessUnitById($companyBusinessUnitTransfer);
+
+        if ($companyBusinessUnitTransfer->getIdCompanyBusinessUnit() === null) {
             return $companyUserTransfer;
         }
 

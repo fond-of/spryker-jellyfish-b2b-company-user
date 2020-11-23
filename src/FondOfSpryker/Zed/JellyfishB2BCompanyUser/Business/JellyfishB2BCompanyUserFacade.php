@@ -12,7 +12,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class JellyfishB2BCompanyUserFacade extends AbstractFacade implements JellyfishB2BCompanyUserFacadeInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -28,7 +28,7 @@ class JellyfishB2BCompanyUserFacade extends AbstractFacade implements JellyfishB
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -44,7 +44,7 @@ class JellyfishB2BCompanyUserFacade extends AbstractFacade implements JellyfishB
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
