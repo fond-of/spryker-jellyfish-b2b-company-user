@@ -9,6 +9,7 @@ use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUse
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Validator\CompanyUserExportValidator;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Validator\CompanyUserExportValidatorInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyBusinessUnitFacadeInterface;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyTypeFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyUserFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCustomerFacadeInterface;
@@ -27,6 +28,7 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
     {
         return new CompanyUserExportValidator(
             $this->getCompanyUserFacade(),
+            $this->getCompanyRoleFacade(),
             $this->getCompanyTypeFacade(),
             $this->getConfig()
         );
@@ -82,5 +84,15 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
     public function getCompanyBusinessUnitFacade(): JellyfishB2BCompanyUserToCompanyBusinessUnitFacadeInterface
     {
         return $this->getProvidedDependency(JellyfishB2BCompanyUserDependencyProvider::FACADE_COMPANY_BUSINESS_UNIT);
+    }
+
+    /**
+     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface
+     *
+     * @throws \Spryker\Zed\Kernel\Exception\Container\ContainerKeyNotFoundException
+     */
+    protected function getCompanyRoleFacade(): JellyfishB2BCompanyUserToCompanyRoleFacadeInterface
+    {
+        return $this->getProvidedDependency(JellyfishB2BCompanyUserDependencyProvider::FACADE_COMPANY_ROLE);
     }
 }

@@ -3,6 +3,8 @@
 namespace FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Validator;
 
 use ArrayObject;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeBridge;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyTypeFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyUserFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\JellyfishB2BCompanyUserConfig;
@@ -34,15 +36,23 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
     protected $companyUserFacade;
 
     /**
+     * @var \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface
+     */
+    protected $companyRoleFacade;
+
+    /**
      * @param \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyUserFacadeInterface $companyUserFacade
+     * @param \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface $companyRoleFacade
      * @param \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyTypeFacadeInterface $companyTypeFacade
      * @param \FondOfSpryker\Zed\JellyfishB2BCompanyUser\JellyfishB2BCompanyUserConfig $companyUserConfig
      */
     public function __construct(
         JellyfishB2BCompanyUserToCompanyUserFacadeInterface $companyUserFacade,
+        JellyfishB2BCompanyUserToCompanyRoleFacadeInterface $companyRoleFacade,
         JellyfishB2BCompanyUserToCompanyTypeFacadeInterface $companyTypeFacade,
         JellyfishB2BCompanyUserConfig $companyUserConfig
     ) {
+        $this->companyRoleFacade = $companyRoleFacade;
         $this->companyTypeFacade = $companyTypeFacade;
         $this->companyUserConfig = $companyUserConfig;
         $this->companyUserFacade = $companyUserFacade;
@@ -69,6 +79,11 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
         }
 
         $companyUserTransfer = $this->getCompanyUserTransfer($eventEntityTransfer);
+
+        if ($companyUserTransfer->getCompanyRoleCollection() === null) {
+            return false;
+        }
+
         $companyUserRolesCollection = $this->getCompanyUserRolesCollection(
             $companyUserTransfer,
             $companyUserTransfer->getCompanyRoleCollection()
@@ -84,14 +99,23 @@ class CompanyUserExportValidator implements CompanyUserExportValidatorInterface
      */
     protected function getCompanyUserTransfer(EventEntityTransfer $eventEntityTransfer): CompanyUserTransfer
     {
+        $companyUserTransfer = null;
         $transferData = $eventEntityTransfer->getTransferData();
+
         if (isset($transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER])) {
-            return $transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER];
+            $companyUserTransfer = $transferData[self::EVENT_ENTITY_TRANSFER_DATA_KEY_COMPANY_USER];
         }
 
-        $companyUserTransfer = (new CompanyUserTransfer())->setIdCompanyUser($eventEntityTransfer->getId());
+        if ($companyUserTransfer === null) {
+            $companyUserTransfer = (new CompanyUserTransfer())->setIdCompanyUser($eventEntityTransfer->getId());
+            $companyUserTransfer = $this->companyUserFacade->findCompanyUserById($companyUserTransfer);
+        }
 
-        return $this->companyUserFacade->findCompanyUserById($companyUserTransfer);
+        if ($companyUserTransfer->getCompanyRoleCollection() === null) {
+            $companyUserTransfer = $this->companyRoleFacade->hydrateCompanyUser($companyUserTransfer);
+        }
+
+        return $companyUserTransfer;
     }
 
     /**
