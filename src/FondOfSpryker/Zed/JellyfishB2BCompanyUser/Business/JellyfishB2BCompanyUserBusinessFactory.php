@@ -4,11 +4,14 @@ namespace FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business;
 
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyBusinessUnitExpander;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyBusinessUnitExpanderInterface;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyExpander;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyExpanderInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCustomerExpander;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCustomerExpanderInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Validator\CompanyUserExportValidator;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Validator\CompanyUserExportValidatorInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyBusinessUnitFacadeInterface;
+use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyRoleFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyTypeFacadeInterface;
 use FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyUserFacadeInterface;
@@ -45,6 +48,16 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyExpanderInterface
+     */
+    public function createCompanyUserCompanyExpander(): CompanyUserCompanyExpanderInterface
+    {
+        return new CompanyUserCompanyExpander(
+            $this->getCompanyFacade()
+        );
+    }
+
+    /**
      * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Business\Model\Expander\CompanyUserCompanyBusinessUnitExpanderInterface
      */
     public function createCompanyUserCompanyBusinessUnitExpander(): CompanyUserCompanyBusinessUnitExpanderInterface
@@ -52,6 +65,16 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
         return new CompanyUserCompanyBusinessUnitExpander(
             $this->getCompanyBusinessUnitFacade()
         );
+    }
+
+    /**
+     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\Jellyfis
+     *
+     * @throws \Spryker\Zed\Kernel\Exception\Container\ContainerKeyNotFoundException
+     */
+    protected function getCompanyFacade(): JellyfishB2BCompanyUserToCompanyFacadeInterface
+    {
+        return $this->getProvidedDependency(JellyfishB2BCompanyUserDependencyProvider::FACADE_COMPANY);
     }
 
     /**
