@@ -68,8 +68,8 @@ class JellyfishB2BCompanyUserBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\Jellyfis
-     *
+     * @return \FondOfSpryker\Zed\JellyfishB2BCompanyUser\Dependency\Facade\JellyfishB2BCompanyUserToCompanyFacadeInterface
+     * 
      * @throws \Spryker\Zed\Kernel\Exception\Container\ContainerKeyNotFoundException
      */
     protected function getCompanyFacade(): JellyfishB2BCompanyUserToCompanyFacadeInterface
