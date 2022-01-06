@@ -59,4 +59,22 @@ class JellyfishB2BCompanyUserFacade extends AbstractFacade implements JellyfishB
             ->createCompanyUserCompanyBusinessUnitExpander()
             ->expand($companyUserTransfer);
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer
+     */
+    public function expandCompanyUserWithCompany(
+        CompanyUserTransfer $companyUserTransfer
+    ): CompanyUserTransfer {
+        return $this->getFactory()
+            ->createCompanyUserCompanyExpander()
+            ->expand($companyUserTransfer);
+    }
+
 }

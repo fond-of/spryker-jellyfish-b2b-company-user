@@ -42,4 +42,17 @@ interface JellyfishB2BCompanyUserFacadeInterface
      * @return \Generated\Shared\Transfer\CompanyUserTransfer
      */
     public function expandCompanyUserWithCompanyBusinessUnit(CompanyUserTransfer $companyUserTransfer): CompanyUserTransfer;
+
+    /**
+     * Specification
+     * - Expand Company User Transfer Object with the Company Transfer Object
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\CompanyUserTransfer $companyUserTransfer
+     *
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer
+     */
+    public function expandCompanyUserWithCompany(CompanyUserTransfer $companyUserTransfer): CompanyUserTransfer;
+
 }
